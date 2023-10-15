@@ -30,9 +30,9 @@ def run_training_loop(config: dict, logger: Logger, args: argparse.Namespace):
     ptu.init_gpu(use_gpu=not args.no_gpu, gpu_id=args.which_gpu)
 
     # make the gym environment
-    env = config["make_env"](eval=False)
-    eval_env = config["make_env"](eval=True)
-    render_env = config["make_env"](eval=True, render=True)
+    env = config["make_env"]()
+    eval_env = config["make_env"]()
+    render_env = config["make_env"](render=True)
     exploration_schedule = config["exploration_schedule"]
     discrete = isinstance(env.action_space, gym.spaces.Discrete)
 
@@ -95,6 +95,7 @@ def run_training_loop(config: dict, logger: Logger, args: argparse.Namespace):
 
         # TODO(student): Step the environment
 
+        next_observation = np.asarray(next_observation)
         truncated = info.get("TimeLimit.truncated", False)
 
         # TODO(student): Add the data to the replay buffer
@@ -186,7 +187,7 @@ def main():
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--no_gpu", "-ngpu", action="store_true")
     parser.add_argument("--which_gpu", "-gpu_id", default=0)
-    parser.add_argument("--log_interval", type=int, default=1)
+    parser.add_argument("--log_interval", type=int, default=1000)
 
     args = parser.parse_args()
 
