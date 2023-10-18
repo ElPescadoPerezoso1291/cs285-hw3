@@ -229,7 +229,6 @@ class SoftActorCritic(nn.Module):
             "critic_loss": loss.item(),
             "q_values": q_values.mean().item(),
             "target_values": target_values.mean().item(),
-            "next_action_entropy": next_action_entropy.mean().item()
         }
 
     def entropy(self, action_distribution: torch.distributions.Distribution):
